@@ -148,7 +148,7 @@ function convertToBase64(file) {
 
 // 🔴 อัปเดตล่าสุด: ใช้ -latest และมีการดักจับ Error
 async function analyzeFoodWithAI(base64Data, mimeType) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${storedApiKey}`;
+   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${storedApiKey}`;
     
     const prompt = `
         Analyze this food image. Provide the common Thai name of the food and estimate its total calories. 

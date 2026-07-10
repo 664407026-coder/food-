@@ -2,12 +2,13 @@
 // 1. นำ Firebase Config ของคุณมาใส่ตรงนี้
 // ==========================================
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBpFKXdCwbCcRcFIg49pyEkZVw6p2ysb_c",
+  authDomain: "food-calorie-b1018.firebaseapp.com",
+  projectId: "food-calorie-b1018",
+  storageBucket: "food-calorie-b1018.firebasestorage.app",
+  messagingSenderId: "269409646095",
+  appId: "1:269409646095:web:2032ec3073d258c655157a",
+  measurementId: "G-HF2XKHKSZL"
 };
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();

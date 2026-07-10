@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Diet AI</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Mali:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK (Compat Version) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body>
+
+    <!-- หน้าต่าง Login -->
+    <div id="login-screen" class="screen">
+        <div class="pixel-box text-center">
+            <h1>🍱 Pixel Diet</h1>
+            <p>สแกนอาหาร คำนวณแคลอรีด้วย AI</p>
+            <button id="login-btn" class="btn-pixel">ล็อกอินด้วย Google</button>
+        </div>
+    </div>
+
+    <!-- หน้าต่างแอปหลัก -->
+    <main id="app-screen" class="screen hidden">
+        
+        <header class="header">
+            <span id="player-name">User</span>
+            <button id="logout-btn" class="btn-pixel btn-small btn-danger">ออกระบบ</button>
+        </header>
+
+        <!-- โซนตั้งค่า API Key (ปลอดภัย เก็บในเครื่อง) -->
+        <section class="pixel-box text-center" style="background-color: #f1f2f6;">
+            <h2>🔑 สมองกล AI</h2>
+            <p style="font-size: 12px; color: gray;">กรอก Gemini API Key เพื่อเริ่มสแกนอาหาร (บันทึกเฉพาะในเครื่องนี้เท่านั้น)</p>
+            
+            <input type="password" id="api-key-input" placeholder="วาง API Key ที่นี่..." class="input-pixel">
+            <br>
+            
+            <button id="save-key-btn" class="btn-pixel btn-primary btn-small">บันทึก Key</button>
+            <button id="clear-key-btn" class="btn-pixel btn-danger btn-small hidden">ลบ Key ทิ้ง</button>
+            
+            <p id="key-status" class="status-text" style="font-size: 12px; margin-top: 10px;"></p>
+        </section>
+
+        <!-- แดชบอร์ดสรุปแคลอรี -->
+        <section class="pixel-box text-center">
+            <h2>🎯 เป้าหมายรายวัน</h2>
+            <div class="progress-bar-container">
+                <div id="calorie-fill" class="progress-fill" style="width: 0%;"></div>
+            </div>
+            <p><span id="current-cal">0</span> / <span id="target-cal">2000</span> kcal</p>
+            <p id="diet-status" class="status-text">👍 กำลังดีเลย!</p>
+        </section>
+
+        <!-- โซนอัปโหลดรูปภาพ -->
+        <section class="pixel-box text-center">
+            <h2>📸 สแกนอาหาร</h2>
+            <input type="file" id="food-image" accept="image/*" class="hidden">
+            <label for="food-image" class="btn-pixel btn-primary" style="display: inline-block;">เลือกรูปภาพ / ถ่ายรูป</label>
+            
+            <div id="loading-indicator" class="hidden" style="margin-top: 15px;">
+                <p class="blink">🤖 AI กำลังคิด...</p>
+            </div>
+        </section>
+
+        <!-- ประวัติการกินวันนี้ -->
+        <section class="pixel-box">
+            <h2>🍽️ เมนูวันนี้</h2>
+            <div id="food-list" class="food-list">
+                <!-- รายการอาหารจะโผล่ตรงนี้ -->
+            </div>
+        </section>
+
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

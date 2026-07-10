@@ -10,7 +10,7 @@ const firebaseConfig = {
   appId: "1:269409646095:web:2032ec3073d258c655157a",
   measurementId: "G-HF2XKHKSZL"
 };
-// เช็คว่าเริ่มต้น Firebase ไปหรือยัง (กัน Error หน้าโหลดซ้ำ)
+
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
@@ -20,7 +20,7 @@ const db = firebase.firestore();
 // ==========================================
 // 2. อ้างอิง UI Elements
 // ==========================================
-const DAILY_TARGET = 2000; // เป้าหมายแคลอรีรายวัน
+const DAILY_TARGET = 2000; 
 
 const loginScreen = document.getElementById('login-screen');
 const appScreen = document.getElementById('app-screen');
@@ -121,16 +121,13 @@ imageInput.addEventListener('change', async (e) => {
         const base64Image = await convertToBase64(file);
         const cleanBase64 = base64Image.split(',')[1];
         
-        // ส่งให้ AI และรอรับผลลัพธ์
         const aiResult = await analyzeFoodWithAI(cleanBase64, file.type);
-        
-        // บันทึกลงฐานข้อมูล
         await saveFoodToDatabase(aiResult.foodName, aiResult.calories);
-        alert(`✅ เพิ่มเมนู: ${aiResult.foodName} (${aiResult.calories} kcal) สำเร็จ!`);
         
+        alert(`✅ เพิ่มเมนู: ${aiResult.foodName} (${aiResult.calories} kcal) สำเร็จ!`);
     } catch (error) {
         console.error("Error หลัก:", error);
-        alert(`เกิดข้อผิดพลาด: ${error.message}\nโปรดเช็ค API Key ว่าถูกต้องหรือไม่ หรือลองเปิด Console (F12) เพื่อดูสาเหตุเพิ่มเติมครับ`);
+        alert(`เกิดข้อผิดพลาด: ${error.message}\nโปรดเช็ค Console (F12) เพื่อดูรายละเอียดเพิ่มเติม`);
     } finally {
         loadingIndicator.classList.add('hidden');
         imageInput.value = '';
@@ -146,9 +143,9 @@ function convertToBase64(file) {
     });
 }
 
-// 🔴 อัปเดตล่าสุด: ใช้ -latest และมีการดักจับ Error
 async function analyzeFoodWithAI(base64Data, mimeType) {
-   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${storedApiKey}`;
+    // 🔴 ใช้โมเดลมาตรฐานที่สุด gemini-1.5-flash
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${storedApiKey}`;
     
     const prompt = `
         Analyze this food image. Provide the common Thai name of the food and estimate its total calories. 
@@ -173,15 +170,12 @@ async function analyzeFoodWithAI(base64Data, mimeType) {
 
     const data = await response.json();
 
-    // ดัก Error จาก AI ถ้ารหัสสถานะไม่ใช่ 200 OK
     if (!response.ok) {
         console.error("รายละเอียด Error จากเซิร์ฟเวอร์ AI:", data);
-        throw new Error(`AI API Error: ${data.error?.message || 'ไม่ทราบสาเหตุ'}`);
+        throw new Error(data.error?.message || 'การเชื่อมต่อ API ล้มเหลว');
     }
 
     let aiText = data.candidates[0].content.parts[0].text;
-    
-    // ทำความสะอาดข้อความ JSON
     aiText = aiText.replace(/```json/g, '').replace(/```/g, '').trim();
     return JSON.parse(aiText);
 }
